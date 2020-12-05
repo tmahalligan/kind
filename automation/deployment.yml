@@ -30,12 +30,10 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: http-ingress
-  annotations:
-    kubernetes.io/ingress.class: ambassador
+  name: nginx.tomh.odin
 spec:
   rules:
-  - host: kind.testing.internal
+  - host: nginx.tomh.odin
     http:
       paths:
       - path: /

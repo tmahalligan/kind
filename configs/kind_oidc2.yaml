@@ -1,0 +1,34 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  apiServerAddress: "127.0.0.1"
+  apiServerPort: 65443
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:
+        oidc-issuer-url: "https://my.auth.provider.org/auth/realms/KindKube"
+        oidc-client-id: kind-kube
+        #oidc-ca-file: /etc/kubernetes/pki/apiserver.crt
+        oidc-username-claim: email
+        #oidc-username-prefix: "oidc:"
+        #oidc-groups-claim: groups
+        #oidc-groups-prefix: "oidc:"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+- role: worker
+- role: worker
+- role: worker

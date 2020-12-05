@@ -1,0 +1,23 @@
+kubeadmConfigPatches:
+- |
+  apiVersion: kubeadm.k8s.io/v1beta2
+  kind: ClusterConfiguration
+  metadata:
+    name: config
+  apiServer:
+    extraArgs:
+      audit-policy-file: "/auditing/basic-policy.yaml"
+      audit-log-path: "/auditing/audit.log"
+    extraVolumes:
+    - name: "auditing"
+      hostPath: "/auditing"
+      mountPath: "/auditing"
+      readOnly: false
+      pathType: "Directory"
+nodes:
+- role: control-plane
+  # add a mount from /path/to/my/files on the host to /files on the node
+  extraMounts:
+  - hostPath: /home/ubuntu/auditing/
+    containerPath: /auditing
+    propagation: None

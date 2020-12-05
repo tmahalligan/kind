@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    ambcrd: https://github.com/datawire/ambassador-operator/releases/latest/download/ambassador-operator-crds.yaml
+    amboperator: -f https://github.com/datawire/ambassador-operator/releases/latest/download/ambassador-operator-kind.yaml
+  tasks:
+  
+  - name: Pause 2 minutes
+    pause:
+      minutes: 2
+
+  - name: Create Ambasdor CRD
+    community.kubernetes.k8s:
+      state: present
+      src: ambassador-operator-crds.yaml
+  
+  - name: Pause 30 seconds
+    pause:
+      seconds: 30
+
+  - name: Create Ambasdor CRD
+    shell: kubectl apply -n ambassador -f https://github.com/datawire/ambassador-operator/releases/latest/download/ambassador-operator-kind.yaml
+

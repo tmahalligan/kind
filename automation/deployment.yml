@@ -1,0 +1,46 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: localhost:5000/kindnginx:1.0.2
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  # Default port used by the image
+  - port: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: http-ingress
+  annotations:
+    kubernetes.io/ingress.class: ambassador
+spec:
+  rules:
+  - host: kind.testing.internal
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-service
+          servicePort: 80
+
+---

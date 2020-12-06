@@ -4,9 +4,9 @@
   connection: local
   tasks:
   
-  - name: Pause 2 minutes
+  - name: Pause 30 seconds
     pause:
-      minutes: 2
+      seconds: 30
 
   - name: Create Nginx Ingress
     shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml

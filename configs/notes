@@ -1,0 +1,4 @@
+ingress2 notes
+Then when I deploy my nginx ingress I make sure I use hostPort. I'm then able to reach my apps from my host ip from another host on my home network
+
+

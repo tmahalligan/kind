@@ -1,0 +1,32 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraMounts:
+    - hostPath: /root/.docker/config.json
+      containerPath: /var/lib/kubelet/config.json
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+        authorization-mode: "AlwaysAllow"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+  # extraMounts:
+  # - hostPath: /home/path/files/
+  #   containerPath: /files
+- role: worker
+  extraMounts:
+    - hostPath: /root/.docker/config.json
+      containerPath: /var/lib/kubelet/config.json
+- role: worker
+  extraMounts:
+    - hostPath: /root/.docker/config.json
+      containerPath: /var/lib/kubelet/config.json
